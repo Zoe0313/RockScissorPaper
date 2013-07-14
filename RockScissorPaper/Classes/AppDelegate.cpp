@@ -10,7 +10,8 @@
 
 #include "cocos2d.h"
 #include "SimpleAudioEngine.h"
-#include "HelloWorldScene.h"
+#include "CMenuLayer.h"
+#include "CUtility.h"
 
 USING_NS_CC;
 using namespace CocosDenshion;
@@ -28,16 +29,25 @@ bool AppDelegate::applicationDidFinishLaunching()
 {
     // initialize director
     CCDirector *pDirector = CCDirector::sharedDirector();
-    pDirector->setOpenGLView(CCEGLView::sharedOpenGLView());
+    CCEGLView *pEGLView = CCEGLView::sharedOpenGLView();
+    
+    pDirector->setOpenGLView(pEGLView);
 
     // turn on display FPS
-    pDirector->setDisplayStats(true);
+    pDirector->setDisplayStats(false);
 
     // set FPS. the default value is 1.0/60 if you don't call this
     pDirector->setAnimationInterval(1.0 / 60);
-
+    
+    CCSize screenSize = pEGLView->getFrameSize();
+    CCLog("w = %f, h = %f", screenSize.width,screenSize.height);
+    
+    pEGLView->setDesignResolutionSize(640, 960, kResolutionShowAll);
+    
+    CCDirector::sharedDirector()->setContentScaleFactor(CUtility::GetPicScaleFactor());
+    
     // create a scene. it's an autorelease object
-    CCScene *pScene = HelloWorld::scene();
+    CCScene *pScene = CMenuLayer::scene();
 
     // run
     pDirector->runWithScene(pScene);
